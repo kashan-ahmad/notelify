@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+
+export const AppContext = createContext({
+  notes: [],
+  setNotes: () => {},
+});
 
 function App() {
+  const [notes, setNotes] = useState([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        minWidth: "768px",
+      }}
+      className="vh-100 p-3 p-md-4 d-flex flex-column"
+    >
+      <ul className="nav nav-tabs">
+        <li className="nav-item">
+          <NavLink
+            end
+            to="/notes"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            Notes
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            end
+            to="/notes/add"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            Add Note
+          </NavLink>
+        </li>
+      </ul>
+      <div className="flex-grow-1 border-start border-end border-bottom p-3 p-md-4">
+        <AppContext.Provider value={{ notes, setNotes }}>
+          <Outlet />
+        </AppContext.Provider>
+      </div>
     </div>
   );
 }
